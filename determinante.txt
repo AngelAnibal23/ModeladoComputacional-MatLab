@@ -1,0 +1,17 @@
+>> A = [2,4,5;5,1,3;6,2,2]; 
+>> n = size(A); 
+>> d = A(1,1); 
+>> for i=1:n-1 
+       for j=i+1:n
+           f = A(i,j) / (-A(i,i));
+           for k=i:n
+              A(j,k) = A(j,k) + (f*A(i,k)); 
+           end 
+       end 
+   end 
+>> 
+>> for i=2:n
+    d = d * A(i,i); 
+   end 
+>> 
+>> disp(d)
