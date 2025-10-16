@@ -1,0 +1,34 @@
+function newton_raphson()
+    syms x; 
+    f_string = input('Ingrese la funcion f(x): ', 's'); 
+    f_sym = str2sym(f_string);
+    df_sym = diff(f_sym, x);
+    
+    f = matlabFunction(f_sym, 'Vars', x);
+    df = matlabFunction(df_sym, 'Vars', x); 
+    
+    disp(df_sym); 
+    x0 = input('Ingrese el valor de disparo x0: ');
+    e = input('Ingrese el error permisible: '); 
+    num = input('Ingrese el numero maximo de iteraciones'); 
+    
+    i = 1; 
+    k = 0; 
+    x(1) = x0; 
+    
+    while k == 0
+       x(i+1) = x(i) - f(x(i))/df(x(i)); 
+       if abs (x(i+1) - x(i)) < e 
+           r = x(i+1);
+           fprintf('La raiz encontrada es: %6f\n', r); 
+           k = 1; 
+       else 
+           if i <= num
+               i = i+1; 
+           else
+               disp('El metodo no converge. '); 
+               k = 1; 
+           end
+       end
+    end
+end
