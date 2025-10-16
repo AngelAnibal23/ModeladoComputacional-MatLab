@@ -1,0 +1,35 @@
+function biseccion()
+    f_string = input('Ingrese la funcion f(x): ', 's'); 
+    f = str2func(f_string);
+    
+    a = input('Ingrese a: '); 
+    b = input('Ingrese b: ');
+    E = 0.000001; 
+    
+    k = 0; 
+    while k == 0
+        c = (a+b)/2; 
+        if f(a)*f(c) <= 0
+            if f(a)*f(c) == 0
+                if f(a) == 0
+                    r = a;
+                else
+                    r = c; 
+                end
+                k = 1; 
+            else
+                b = c; 
+            end 
+        else 
+            a = c; 
+        end 
+        
+        if k == 0
+            if abs(b-a) < E
+                r = (a+b)/2; 
+                k = 1; 
+            end
+        end 
+    end      
+        disp(r);  
+end
