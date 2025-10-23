@@ -21,7 +21,7 @@ x = [];
 
 while n > 2
     
-    if k == 100000000
+    if k > num
         
         u = input('Ingrese el nuevo valor de u: '); 
         v = input('Ingrese el nuevo valor v: '); 
@@ -59,6 +59,9 @@ while n > 2
      
      for i = 1 : n+1
         a(i) = b(i); 
+        k = 1;
+        u = input('Ingrese el nuevo valor de u: '); 
+        v = input('Ingrese el nuevo valor v: '); 
      end
      k = 1; 
      else
