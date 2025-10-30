@@ -1,7 +1,6 @@
 function lagrange()
 
-n = input('Ingrese el numero de datos que va ingresar: '); 
-xr =input('Ingrese la abscisa intermedia que desea aproximar: '); 
+n = input('Ingrese grado del polinomio de lagrange: ');
 
 x = []; 
 y = []; 
@@ -11,27 +10,38 @@ for i = 1 : n +1
     y(i) = input(sprintf('A%d = Ingese el Y: ',i)); 
 end
 
-yr = 0; 
+band = 1;
 
-for i = 1: n +1
-j = 1; 
-NL = 1; 
-DL = 1; 
+while band == 1 
+    xr =input('Ingrese la abscisa intermedia que desea aproximar: '); 
+    yr = 0;
 
-while j <= n 
-    if (i ~= n) || (i ~= j) 
-        if i == j 
-            j = j +1; 
+    for i = 1 : n + 1
+
+    j = 1; 
+    NL = 1; 
+    DL = 1; 
+
+    while j <= n + 1
+        if  (i ~= j) 
+            NL = NL * (xr - x(j)); 
+            DL = DL * (x(i) - x(j)); 
         end
-        NL = NL * (xr - x(j)); 
-        DL = DL * (x(i)-x(j)); 
+        j = j + 1; 
     end
-    j = j+1;
-end
-    yr = yr + ((NL/DL) * y(i)); 
 
+        yr = yr + ((NL/DL)*y(i)); 
+
+    end
+
+    disp(yr); 
+
+     continuar = input('¿Desea continuar? (1 = sí, 0 = no): ');
+    
+    if continuar == 0
+        band = 0; 
+    end
 end
 
-disp(yr); 
 
 end
