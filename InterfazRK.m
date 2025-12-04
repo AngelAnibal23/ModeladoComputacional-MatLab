@@ -22,7 +22,7 @@ function varargout = InterfazRK(varargin)
 
 % Edit the above text to modify the response to help InterfazRK
 
-% Last Modified by GUIDE v2.5 04-Dec-2025 09:35:02
+% Last Modified by GUIDE v2.5 04-Dec-2025 18:07:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -57,6 +57,23 @@ handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
+
+set(handles.comparar, 'Visible', 'off');     % Ocultar botón comparar
+
+set(handles.resultado2, 'Visible', 'off');   % Ocultar RK2
+set(handles.resultado3, 'Visible', 'off');   % Ocultar Taylor
+set(handles.error2, 'Visible', 'off');       % Ocultar error RK2
+set(handles.error3, 'Visible', 'off');       % Ocultar error Taylor
+
+set(handles.OrangeKutta, 'Visible', 'off'); 
+set(handles.orangeK, 'Visible', 'off'); 
+set(handles.orangeE, 'Visible', 'off'); 
+set(handles.sqareskyblue, 'Visible', 'off'); 
+set(handles.skyblueE, 'Visible', 'off'); 
+set(handles.skyblueTay, 'Visible', 'off'); 
+    
+    
+
 
 % UIWAIT makes InterfazRK wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -201,11 +218,22 @@ function calcular_Callback(hObject, eventdata, handles)
     xn = str2double(get(handles.xn, 'String'));
     n = str2double(get(handles.n, 'String'));
 
-    C = Eddo_RK(f, x0, y0, xn, n); 
-    E = 0.0001;
+    C = Eddo_RK(f, x0, y0, xn, n);
+    C2 = Eddo_RK(f, x0, y0, xn, 2*n);
 
-    set(handles.resultado1, 'String', num2str(C)); 
-    set(handles.error1, 'String', num2str(E));
+    error1 = abs(C2 - C);
+
+    set(handles.resultado1, 'String', num2str(C));
+    
+    set(handles.comparar, 'Visible', 'on');      % Mostrar botón comparar al calcular
+
+    % Asegurar que RK2 y Taylor sigan ocultos hasta presionar comparar:
+    set(handles.resultado2, 'Visible', 'off');
+    set(handles.resultado3, 'Visible', 'off');
+    set(handles.error2, 'Visible', 'off');
+    set(handles.error3, 'Visible', 'off');
+
+    set(handles.error1,'String', num2str(error1));
     [X, Y] = edo_RK_plot(f, x0, y0, xn, n);
     axes(handles.axes1);  
     plot(X, Y, 'b.-', 'LineWidth', 1.5);
@@ -220,20 +248,37 @@ function limpiar_Callback(hObject, eventdata, handles)
 % hObject    handle to limpiar (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-set(handles.funcion, 'String', '');
-set(handles.x0, 'String', '');
-set(handles.y0, 'String', '');
-set(handles.xn, 'String', '');
-set(handles.n, 'String', '');
+    set(handles.funcion, 'String', '');
+    set(handles.x0, 'String', '');
+    set(handles.y0, 'String', '');
+    set(handles.xn, 'String', '');
+    set(handles.n, 'String', '');
 
-set(handles.resultado1, 'String', '');
+    set(handles.resultado1, 'String', '');
+    set(handles.resultado2, 'String', ''); 
+    set(handles.resultado3, 'String', '');
+    set(handles.error1, 'String', ''); 
+    set(handles.error2, 'String', '');
+    set(handles.error3, 'String', ''); 
+    axes(handles.axes1);
+    cla reset;     
+    grid off;
+    title('');
 
-axes(handles.axes1);
-cla reset;     
-grid off;
-title('');
+    guidata(hObject, handles);
+    
+    set(handles.comparar, 'Visible', 'off');
+    set(handles.resultado2, 'Visible', 'off');
+    set(handles.resultado3, 'Visible', 'off');
+    set(handles.error2, 'Visible', 'off');
+    set(handles.error3, 'Visible', 'off');
+    set(handles.OrangeKutta, 'Visible', 'off'); 
+    set(handles.orangeK, 'Visible', 'off'); 
+    set(handles.orangeE, 'Visible', 'off'); 
+    set(handles.sqareskyblue, 'Visible', 'off'); 
+    set(handles.skyblueE, 'Visible', 'off'); 
+    set(handles.skyblueTay, 'Visible', 'off'); 
 
-guidata(hObject, handles);
 
 % --- Executes on button press in comparar.
 function comparar_Callback(hObject, eventdata, handles)
@@ -259,6 +304,18 @@ function comparar_Callback(hObject, eventdata, handles)
     set(handles.error2, 'String', num2str(E2)); 
     set(handles.error3, 'String', num2str(E3)); 
     
+    set(handles.resultado2, 'Visible', 'on');
+    set(handles.resultado3, 'Visible', 'on');
+    set(handles.error2, 'Visible', 'on');
+    set(handles.error3, 'Visible', 'on');
+    set(handles.OrangeKutta, 'Visible', 'on'); 
+    set(handles.orangeK, 'Visible', 'on'); 
+    set(handles.orangeE, 'Visible', 'on'); 
+    set(handles.sqareskyblue, 'Visible', 'on'); 
+    set(handles.skyblueE, 'Visible', 'on'); 
+    set(handles.skyblueTay, 'Visible', 'on'); 
 
 
 
+    
+    
