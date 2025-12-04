@@ -22,7 +22,7 @@ function varargout = InterfazRK(varargin)
 
 % Edit the above text to modify the response to help InterfazRK
 
-% Last Modified by GUIDE v2.5 03-Dec-2025 09:56:26
+% Last Modified by GUIDE v2.5 04-Dec-2025 09:35:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -202,16 +202,17 @@ function calcular_Callback(hObject, eventdata, handles)
     n = str2double(get(handles.n, 'String'));
 
     C = Eddo_RK(f, x0, y0, xn, n); 
+    E = 0.0001;
 
-    set(handles.resultado, 'String', num2str(C)); 
-
+    set(handles.resultado1, 'String', num2str(C)); 
+    set(handles.error1, 'String', num2str(E));
     [X, Y] = edo_RK_plot(f, x0, y0, xn, n);
     axes(handles.axes1);  
     plot(X, Y, 'b.-', 'LineWidth', 1.5);
     grid on;
     xlabel('x');
     ylabel('y(x)');
-    title('Solución usando RK4');
+    title('SoluciÃ³n usando RK4');
     
     
 % --- Executes on button press in limpiar.
@@ -219,3 +220,45 @@ function limpiar_Callback(hObject, eventdata, handles)
 % hObject    handle to limpiar (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+set(handles.funcion, 'String', '');
+set(handles.x0, 'String', '');
+set(handles.y0, 'String', '');
+set(handles.xn, 'String', '');
+set(handles.n, 'String', '');
+
+set(handles.resultado1, 'String', '');
+
+axes(handles.axes1);
+cla reset;     
+grid off;
+title('');
+
+guidata(hObject, handles);
+
+% --- Executes on button press in comparar.
+function comparar_Callback(hObject, eventdata, handles)
+% hObject    handle to comparar (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    f_txt = get(handles.funcion, 'String');
+    f = str2func(['@(x,y)' f_txt]);
+
+    x0 = str2double(get(handles.x0, 'String'));
+    y0 = str2double(get(handles.y0, 'String'));
+    xn = str2double(get(handles.xn, 'String'));
+    n  = str2double(get(handles.n, 'String'));
+    
+    C = Eddo_RK(f, x0, y0, xn, n); 
+    RK2 = Eddo_RK2(f, x0, y0, xn, n);             
+    T2  = edo_taylor(f, x0, y0, xn, n);     
+    E2 = abs(C - RK2);
+    E3 = abs(C - T2); 
+    
+    set(handles.resultado2, 'String', num2str(RK2));
+    set(handles.resultado3, 'String', num2str(T2));
+    set(handles.error2, 'String', num2str(E2)); 
+    set(handles.error3, 'String', num2str(E3)); 
+    
+
+
+
